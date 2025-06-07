@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini Code Converter - Convert Directories to Text for AI</title>
+    <title>LocalRepo2Txt - Convert Directories to Text for AI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&family=Google+Sans+Display:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -545,8 +545,7 @@
             <div class="gemini-icon">
                 <span class="material-icons" style="color: white; font-size: 20px;">auto_awesome</span>
             </div>
-            <h1 class="app-title">Gemini Code Converter</h1>
-            <span class="beta-badge">Beta</span>
+            <h1 class="app-title">LocalRepo2Txt</h1>
         </div>
     </header>
 
@@ -649,14 +648,170 @@
         <div class="footer-links">
             <a href="https://github.com/michaelthwan/localrepo2txt_html" target="_blank" class="footer-link">
                 <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">code</span>
-                Source Code
+                Source Code (Github)
             </a>
             <a href="https://github.com/abinthomasonline/repo2txt" target="_blank" class="footer-link">
                 <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">star</span>
-                Original Project
+                Credit: repo2txt
             </a>
         </div>
     </footer>
     <script type="module" src="js/local.js"></script>
+    <script>
+        // Enhanced UI interactions for the new design
+        document.addEventListener('DOMContentLoaded', function() {
+            const directoryPicker = document.getElementById('directoryPicker');
+            const zipPicker = document.getElementById('zipPicker');
+            const directoryUpload = document.getElementById('directoryUpload');
+            const zipUpload = document.getElementById('zipUpload');
+            const directoryCount = document.getElementById('directoryCount');
+            const zipCount = document.getElementById('zipCount');
+            const extensionSection = document.getElementById('extensionSection');
+            const directorySection = document.getElementById('directorySection');
+            const actionSection = document.getElementById('actionSection');
+            const outputSection = document.getElementById('outputSection');
+
+            // Directory picker change handler
+            directoryPicker.addEventListener('change', function(e) {
+                const files = e.target.files;
+                if (files.length > 0) {
+                    // Update UI
+                    directoryUpload.classList.add('active');
+                    zipUpload.classList.remove('active');
+                    directoryCount.classList.remove('hidden');
+                    zipCount.classList.add('hidden');
+                    document.getElementById('directoryCountText').textContent = `${files.length} files selected`;
+                    
+                    // Clear zip picker
+                    zipPicker.value = '';
+                    
+                    // Show sections progressively with animation
+                    setTimeout(() => {
+                        extensionSection.style.display = 'block';
+                        extensionSection.classList.add('fade-in-up');
+                    }, 300);
+                    
+                    setTimeout(() => {
+                        directorySection.style.display = 'block';
+                        directorySection.classList.add('fade-in-up');
+                    }, 600);
+                    
+                    setTimeout(() => {
+                        actionSection.style.display = 'block';
+                        actionSection.classList.add('fade-in-up');
+                    }, 900);
+                }
+            });
+
+            // Zip picker change handler
+            zipPicker.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Update UI
+                    zipUpload.classList.add('active');
+                    directoryUpload.classList.remove('active');
+                    zipCount.classList.remove('hidden');
+                    directoryCount.classList.add('hidden');
+                    
+                    // Clear directory picker
+                    directoryPicker.value = '';
+                    
+                    // Show sections progressively with animation
+                    setTimeout(() => {
+                        extensionSection.style.display = 'block';
+                        extensionSection.classList.add('fade-in-up');
+                    }, 300);
+                    
+                    setTimeout(() => {
+                        directorySection.style.display = 'block';
+                        directorySection.classList.add('fade-in-up');
+                    }, 600);
+                    
+                    setTimeout(() => {
+                        actionSection.style.display = 'block';
+                        actionSection.classList.add('fade-in-up');
+                    }, 900);
+                }
+            });
+
+            // Generate button click handler
+            document.getElementById('generateTextButton').addEventListener('click', function() {
+                setTimeout(() => {
+                    outputSection.style.display = 'block';
+                    outputSection.classList.add('fade-in-up');
+                    
+                    // Update token counter
+                    const tokenCountText = document.getElementById('tokenCountText');
+                    if (tokenCountText) {
+                        tokenCountText.textContent = 'Processing...';
+                    }
+                }, 100);
+            });
+
+            // Observe the #directoryStructure for changes to show/hide generate button
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList') {
+                        const directoryStructure = document.getElementById('directoryStructure');
+                        const generateBtn = document.getElementById('generateTextButton');
+                        
+                        if (directoryStructure && directoryStructure.children.length > 0) {
+                            generateBtn.classList.remove('hidden');
+                        }
+                    }
+                });
+            });
+
+            const directoryStructure = document.getElementById('directoryStructure');
+            if (directoryStructure) {
+                observer.observe(directoryStructure, { childList: true, subtree: true });
+            }
+
+            // Update token count display
+            const originalTokenCount = document.getElementById('tokenCount');
+            if (originalTokenCount) {
+                const observer2 = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                            const tokenCountText = document.getElementById('tokenCountText');
+                            if (tokenCountText && originalTokenCount.innerHTML) {
+                                // Extract token count from original element
+                                const match = originalTokenCount.innerHTML.match(/(\d+)/);
+                                if (match) {
+                                    tokenCountText.textContent = `${match[1]} tokens`;
+                                }
+                            }
+                        }
+                    });
+                });
+                observer2.observe(originalTokenCount, { childList: true, subtree: true, characterData: true });
+            }
+
+            // Show copy/download buttons when output text changes
+            const outputText = document.getElementById('outputText');
+            if (outputText) {
+                const observer3 = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+                            if (outputText.value.trim().length > 0) {
+                                document.getElementById('copyButton').classList.remove('hidden');
+                                document.getElementById('downloadButton').classList.remove('hidden');
+                            }
+                        }
+                    });
+                });
+                
+                // Also listen for input events
+                outputText.addEventListener('input', function() {
+                    if (outputText.value.trim().length > 0) {
+                        document.getElementById('copyButton').classList.remove('hidden');
+                        document.getElementById('downloadButton').classList.remove('hidden');
+                    }
+                });
+                
+                observer3.observe(outputText, { attributes: true });
+            }
+        });
+    </script>
 </body>
 </html>
