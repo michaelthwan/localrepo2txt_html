@@ -14,6 +14,7 @@
         /* Apply Inter font to body and most UI elements */
         body {
             font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
         }
         
         /* Apply JetBrains Mono to code, filenames, and monospace elements */
@@ -27,79 +28,264 @@
             font-family: 'JetBrains Mono', monospace !important;
         }
         
+        /* Main container styling */
+        .main-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Header styling */
+        .header-title {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Input sections */
+        .input-section {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .input-section:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Labels */
+        .input-label {
+            color: #374151;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        /* File inputs */
+        input[type=file] {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 12px;
+            background: #ffffff;
+            transition: all 0.2s ease;
+        }
+        
+        input[type=file]:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+        
         input[type=file]::file-selector-button {
             font-family: 'Inter', sans-serif;
             font-weight: 500;
             font-size: 14px;
-            background-color: rgb(59, 130, 246);
-            color: rgb(255, 255, 255);
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
+            padding: 8px 16px;
             cursor: pointer;
-        }
-        input[type=file]::file-selector-button:hover {
-            background-color: rgb(37, 99, 235);
+            transition: all 0.2s ease;
+            margin-right: 12px;
         }
         
-        /* Fix directory structure alignment - only for direct content, not nested structure */
+        input[type=file]::file-selector-button:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+            transform: translateY(-1px);
+        }
+        
+        /* Extension filter section */
+        .extension-filter {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+        
+        .extension-filter label {
+            color: #0369a1;
+            font-weight: 500;
+            font-size: 13px;
+        }
+        
+        /* Directory structure */
+        #directoryStructure {
+            font-size: 13px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        #directoryStructure li {
+            line-height: 1.3;
+            margin: 1px 0;
+            padding: 2px 0;
+            border-radius: 4px;
+            transition: background-color 0.1s ease;
+        }
+        
+        #directoryStructure li:hover {
+            background-color: #f8fafc;
+        }
+        
         #directoryStructure li > input[type="checkbox"],
         #directoryStructure li > button,
         #directoryStructure li > span {
             vertical-align: middle;
         }
         
-        #directoryStructure {
-            font-size: 13px;
+        /* Checkboxes */
+        input[type="checkbox"] {
+            accent-color: #3b82f6;
+            transform: scale(1.1);
         }
         
-        #directoryStructure li {
-            line-height: 1.3;
-            margin: 1px 0;
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+            transition: all 0.2s ease;
         }
         
-        /* Larger output text */
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 10px -1px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            border: none;
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 10px -1px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-tertiary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            border: none;
+            box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-tertiary:hover {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 10px -1px rgba(139, 92, 246, 0.3);
+        }
+        
+        /* Output textarea */
         #outputText {
             font-size: 14px;
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+            transition: border-color 0.2s ease;
+        }
+        
+        #outputText:focus {
+            border-color: #3b82f6;
+            ring: 2px;
+            ring-color: rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+        
+        /* Token count */
+        #tokenCount {
+            color: #6b7280;
+            font-size: 13px;
+            padding: 8px 12px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        
+        /* Footer */
+        footer {
+            color: #6b7280;
+        }
+        
+        footer a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        footer a:hover {
+            color: #1d4ed8;
+        }
+        
+        /* Scrollbar styling */
+        #directoryStructure::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #directoryStructure::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        
+        #directoryStructure::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        #directoryStructure::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen p-4 md:p-8 text-gray-600">
-    <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6 relative">
-        <h1 class="text-3xl font-bold mb-2 text-center text-gray-600">Directory to Plain Text</h1>
-        <p class="text-lg text-center text-gray-500 mb-6">Convert Directory or Zip File to a Single Formatted Text File</p>
+    <div class="max-w-6xl mx-auto main-container rounded-lg p-8 relative">
+        <h1 class="text-4xl font-bold mb-3 text-center header-title">Directory to Plain Text</h1>
+        <p class="text-lg text-center text-gray-500 mb-8">Convert Directory or Zip File to a Single Formatted Text File</p>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-                <label for="directoryPicker" class="block text-sm font-medium text-gray-600">Select Directory:</label>
-                <input type="file" id="directoryPicker" webkitdirectory directory multiple class="mt-1 block w-full">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="input-section">
+                <label for="directoryPicker" class="block input-label mb-3">Select Directory:</label>
+                <input type="file" id="directoryPicker" webkitdirectory directory multiple class="w-full">
             </div>
-            <div>
-                <label for="zipPicker" class="block text-sm font-medium text-gray-600">Or Upload Zip File:</label>
-                <input type="file" id="zipPicker" accept=".zip,.rar,.7z" class="mt-1 block w-full">
-                <p class="text-xs text-gray-500 mt-1">Supported formats: .zip, .rar, .7z</p>
+            <div class="input-section">
+                <label for="zipPicker" class="block input-label mb-3">Or Upload Zip File:</label>
+                <input type="file" id="zipPicker" accept=".zip,.rar,.7z" class="w-full">
+                <p class="text-xs text-gray-500 mt-2">Supported formats: .zip, .rar, .7z</p>
             </div>
         </div>
 
+        <div id="extentionCheckboxes" class="extension-filter mb-6"></div>
+        <div id="directoryStructure" class="mb-6"></div>
 
-
-        <div id="extentionCheckboxes" class="mt-4"></div>
-        <div id="directoryStructure" class="mt-6"></div>
-
-        <button id="generateTextButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hidden flex items-center justify-center">
+        <button id="generateTextButton" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg focus:outline-none hidden flex items-center justify-center w-full mb-4">
             <span class="mr-2">📄</span>
             Generate Text File
         </button>
 
-        <div id="tokenCount" class="mt-4 text-sm text-gray-500"></div>
+        <div id="tokenCount" class="mb-4"></div>
 
-        <textarea id="outputText" rows="20" class="mt-4 w-full p-2 border rounded-md font-mono" readonly></textarea>
+        <textarea id="outputText" rows="20" class="w-full font-mono" readonly></textarea>
 
-        <div class="mt-4 flex space-x-4">
-            <button id="copyButton" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hidden flex items-center justify-center">
+        <div class="mt-6 flex space-x-4">
+            <button id="copyButton" class="flex-1 btn-secondary text-white font-semibold py-3 px-6 rounded-lg focus:outline-none hidden flex items-center justify-center">
                 <span class="mr-2">📋</span>
                 Copy to Clipboard
             </button>
-            <button id="downloadButton" class="flex-1 bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hidden flex items-center justify-center">
+            <button id="downloadButton" class="flex-1 btn-tertiary text-white font-semibold py-3 px-6 rounded-lg focus:outline-none hidden flex items-center justify-center">
                 <span class="mr-2">⬇</span>
                 Download Text File
             </button>
