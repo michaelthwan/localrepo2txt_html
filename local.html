@@ -4,12 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Directory to Plain Text Converter | Convert Directories to Text</title>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/jszip.min.js"></script>
     <script async src="https://unpkg.com/gpt-tokenizer"></script>
     <style>
+        /* Apply Inter font to body and most UI elements */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Apply JetBrains Mono to code, filenames, and monospace elements */
+        .font-mono, 
+        code, 
+        pre, 
+        textarea,
+        #directoryStructure,
+        #outputText,
+        .filename {
+            font-family: 'JetBrains Mono', monospace !important;
+        }
+        
         input[type=file]::file-selector-button {
+            font-family: 'Inter', sans-serif;
             font-weight: 500;
             font-size: 14px;
             background-color: rgb(59, 130, 246);
