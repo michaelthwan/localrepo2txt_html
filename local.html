@@ -787,30 +787,48 @@
                 observer2.observe(originalTokenCount, { childList: true, subtree: true, characterData: true });
             }
 
-            // Show copy/download buttons when output text changes
-            const outputText = document.getElementById('outputText');
-            if (outputText) {
-                const observer3 = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
-                            if (outputText.value.trim().length > 0) {
-                                document.getElementById('copyButton').classList.remove('hidden');
-                                document.getElementById('downloadButton').classList.remove('hidden');
-                            }
-                        }
-                    });
-                });
-                
-                // Also listen for input events
-                outputText.addEventListener('input', function() {
-                    if (outputText.value.trim().length > 0) {
-                        document.getElementById('copyButton').classList.remove('hidden');
-                        document.getElementById('downloadButton').classList.remove('hidden');
-                    }
-                });
-                
-                observer3.observe(outputText, { attributes: true });
-            }
+                         // Show copy/download buttons when output text changes
+             const outputText = document.getElementById('outputText');
+             if (outputText) {
+                 // Function to show buttons
+                 function showButtons() {
+                     const copyBtn = document.getElementById('copyButton');
+                     const downloadBtn = document.getElementById('downloadButton');
+                     if (copyBtn && downloadBtn) {
+                         copyBtn.classList.remove('hidden');
+                         downloadBtn.classList.remove('hidden');
+                         copyBtn.style.display = 'flex';
+                         downloadBtn.style.display = 'flex';
+                     }
+                 }
+                 
+                 // Watch for changes in outputText value
+                 const observer3 = new MutationObserver(function(mutations) {
+                     mutations.forEach(function(mutation) {
+                         if (outputText.value.trim().length > 0) {
+                             showButtons();
+                         }
+                     });
+                 });
+                 
+                 // Multiple ways to detect content changes
+                 outputText.addEventListener('input', showButtons);
+                 outputText.addEventListener('change', showButtons);
+                 
+                 // Check every second if content appears (fallback)
+                 setInterval(function() {
+                     if (outputText.value.trim().length > 0) {
+                         showButtons();
+                     }
+                 }, 1000);
+                 
+                 observer3.observe(outputText, { 
+                     attributes: true, 
+                     childList: true, 
+                     subtree: true,
+                     characterData: true 
+                 });
+             }
         });
     </script>
 </body>
