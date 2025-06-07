@@ -252,6 +252,53 @@ function getSelectedFiles() {
     return Array.from(checkboxes).map(checkbox => JSON.parse(checkbox.value));
 }
 
+// Format Jupyter notebook content
+function formatJupyterNotebook(notebookContent) {
+    try {
+        const notebook = JSON.parse(notebookContent);
+        let formattedContent = '';
+        
+        if (notebook.cells && Array.isArray(notebook.cells)) {
+            notebook.cells.forEach((cell, index) => {
+                if (cell.cell_type === 'code') {
+                    formattedContent += `\n### Code Cell ${index + 1}\n\n`;
+                    formattedContent += '```';
+                    if (notebook.metadata && notebook.metadata.kernelspec && notebook.metadata.kernelspec.language) {
+                        formattedContent += notebook.metadata.kernelspec.language;
+                    } else {
+                        formattedContent += 'python'; // Default to python
+                    }
+                    formattedContent += '\n';
+                    
+                    if (cell.source && Array.isArray(cell.source)) {
+                        formattedContent += cell.source.join('');
+                    } else if (typeof cell.source === 'string') {
+                        formattedContent += cell.source;
+                    }
+                    
+                    formattedContent += '\n```\n';
+                } else if (cell.cell_type === 'markdown') {
+                    formattedContent += `\n### Markdown Cell ${index + 1}\n\n`;
+                    
+                    if (cell.source && Array.isArray(cell.source)) {
+                        formattedContent += cell.source.join('');
+                    } else if (typeof cell.source === 'string') {
+                        formattedContent += cell.source;
+                    }
+                    
+                    formattedContent += '\n';
+                }
+                // Skip output cells as requested
+            });
+        }
+        
+        return formattedContent;
+    } catch (error) {
+        console.error('Error parsing Jupyter notebook:', error);
+        return notebookContent; // Return original content if parsing fails
+    }
+}
+
 // Format repository contents into a single text
 function formatRepoContents(contents) {
     let text = '';
@@ -295,7 +342,9 @@ function formatRepoContents(contents) {
     index = buildIndex(tree);
 
     contents.forEach((item) => {
-        text += `\n\n---\nFile: ${item.path}\n---\n\n${item.text}\n`;
+        const isJupyterNotebook = item.path.toLowerCase().endsWith('.ipynb');
+        const fileContent = isJupyterNotebook ? formatJupyterNotebook(item.text) : item.text;
+        text += `\n\n---\nFile: ${item.path}\n---\n\n${fileContent}\n`;
     });
 
     const formattedText = `Directory Structure:\n\n${index}\n${text}`;
