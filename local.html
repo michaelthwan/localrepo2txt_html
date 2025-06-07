@@ -15,26 +15,17 @@
         :root {
             --google-blue: #1a73e8;
             --google-blue-600: #1967d2;
-            --google-blue-700: #1557b0;
             --google-green: #34a853;
-            --google-green-600: #137333;
-            --google-red: #ea4335;
-            --google-yellow: #fbbc04;
             --google-grey-50: #f8f9fa;
             --google-grey-100: #f1f3f4;
             --google-grey-200: #e8eaed;
             --google-grey-300: #dadce0;
-            --google-grey-400: #bdc1c6;
-            --google-grey-500: #9aa0a6;
             --google-grey-600: #80868b;
             --google-grey-700: #5f6368;
             --google-grey-800: #3c4043;
-            --google-grey-900: #202124;
             --gemini-gradient: linear-gradient(135deg, #4285f4 0%, #34a853 25%, #ea4335 50%, #fbbc04 75%, #4285f4 100%);
-            --surface-elevation-1: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
-            --surface-elevation-2: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
-            --surface-elevation-3: 0 4px 8px 3px rgba(60, 64, 67, 0.15), 0 1px 3px 0 rgba(60, 64, 67, 0.3);
-            --surface-elevation-4: 0 6px 10px 4px rgba(60, 64, 67, 0.15), 0 2px 3px 0 rgba(60, 64, 67, 0.3);
+            --elevation-1: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --elevation-2: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
         }
 
         * {
@@ -44,29 +35,24 @@
 
         body {
             font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--google-grey-50);
+            background: linear-gradient(180deg, var(--google-grey-50) 0%, #ffffff 100%);
             color: var(--google-grey-800);
             font-size: 14px;
             line-height: 20px;
             margin: 0;
             padding: 0;
+            min-height: 100vh;
         }
 
         .mono-font {
             font-family: 'Roboto Mono', 'Consolas', 'Monaco', monospace !important;
         }
 
-        /* Main App Container */
-        .app-container {
-            min-height: 100vh;
-            background: linear-gradient(180deg, var(--google-grey-50) 0%, #ffffff 100%);
-        }
-
         /* Header */
         .app-header {
             background: #ffffff;
             border-bottom: 1px solid var(--google-grey-200);
-            box-shadow: var(--surface-elevation-1);
+            box-shadow: var(--elevation-1);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -101,17 +87,6 @@
             flex-grow: 1;
         }
 
-        .beta-badge {
-            background: var(--google-blue);
-            color: white;
-            font-size: 11px;
-            font-weight: 500;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
         /* Main Content */
         .main-content {
             max-width: 1200px;
@@ -142,46 +117,7 @@
             margin-right: auto;
         }
 
-        /* Cards */
-        .card {
-            background: #ffffff;
-            border: 1px solid var(--google-grey-200);
-            border-radius: 12px;
-            box-shadow: var(--surface-elevation-1);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-        }
-
-        .card:hover {
-            box-shadow: var(--surface-elevation-2);
-            border-color: var(--google-grey-300);
-        }
-
-        .card-header {
-            padding: 20px 24px 16px 24px;
-            border-bottom: 1px solid var(--google-grey-100);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .card-icon {
-            color: var(--google-blue);
-            font-size: 20px;
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--google-grey-800);
-            margin: 0;
-        }
-
-        .card-content {
-            padding: 24px;
-        }
-
-        /* Upload Sections */
+        /* Upload & Common Sections */
         .upload-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -189,25 +125,28 @@
             margin-bottom: 32px;
         }
 
+        .upload-area, .extension-section, .directory-container {
+            background: #ffffff;
+            border: 1px solid var(--google-grey-200);
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         .upload-area {
             position: relative;
             border: 2px dashed var(--google-grey-300);
-            border-radius: 12px;
             padding: 32px 24px;
             text-align: center;
             background: var(--google-grey-50);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
 
-        .upload-area:hover {
+        .upload-area:hover, .upload-area.active {
             border-color: var(--google-blue);
             background: #f8fcff;
         }
 
         .upload-area.active {
-            border-color: var(--google-blue);
-            background: #f8fcff;
             box-shadow: 0 0 0 1px var(--google-blue);
         }
 
@@ -250,16 +189,16 @@
             margin-top: 8px;
         }
 
-        /* Extension Filters */
-        .extension-section {
-            background: #ffffff;
-            border: 1px solid var(--google-grey-200);
-            border-radius: 12px;
-            padding: 20px 24px;
+        /* Extension & Directory Sections */
+        .extension-section, .directory-section {
             margin-bottom: 24px;
         }
 
-        .extension-header {
+        .extension-section {
+            padding: 20px 24px;
+        }
+
+        .extension-header, .directory-header {
             font-size: 14px;
             font-weight: 500;
             color: var(--google-grey-700);
@@ -267,6 +206,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .directory-header {
+            background: var(--google-grey-50);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--google-grey-200);
+            margin: 0;
         }
 
         .extension-grid {
@@ -281,36 +227,6 @@
             gap: 8px;
             font-size: 13px;
             color: var(--google-grey-700);
-        }
-
-        .extension-checkbox {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--google-blue);
-        }
-
-        /* Directory Structure */
-        .directory-section {
-            margin-bottom: 32px;
-        }
-
-        .directory-container {
-            background: #ffffff;
-            border: 1px solid var(--google-grey-200);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .directory-header {
-            background: var(--google-grey-50);
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--google-grey-200);
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--google-grey-700);
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .directory-content {
@@ -333,20 +249,22 @@
             background-color: var(--google-grey-50);
         }
 
-        .directory-checkbox {
+        .extension-checkbox, .directory-checkbox {
             width: 16px;
             height: 16px;
             accent-color: var(--google-blue);
+        }
+
+        .directory-checkbox, .directory-icon {
             flex-shrink: 0;
         }
 
-        .directory-icon {
-            font-size: 16px;
-            flex-shrink: 0;
+        .directory-container {
+            overflow: hidden;
         }
 
-        /* Action Buttons */
-        .action-section {
+        /* Buttons & Actions */
+        .action-section, .output-section {
             margin-bottom: 32px;
         }
 
@@ -362,10 +280,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            text-decoration: none;
             outline: none;
-            position: relative;
-            overflow: hidden;
         }
 
         .google-button:focus {
@@ -375,12 +290,12 @@
         .button-primary {
             background: var(--google-blue);
             color: white;
-            box-shadow: var(--surface-elevation-1);
+            box-shadow: var(--elevation-1);
         }
 
         .button-primary:hover {
             background: var(--google-blue-600);
-            box-shadow: var(--surface-elevation-2);
+            box-shadow: var(--elevation-2);
         }
 
         .button-secondary {
@@ -391,7 +306,7 @@
 
         .button-secondary:hover {
             background: var(--google-grey-50);
-            box-shadow: var(--surface-elevation-1);
+            box-shadow: var(--elevation-1);
         }
 
         .button-full {
@@ -406,11 +321,7 @@
             gap: 16px;
         }
 
-        /* Output Section */
-        .output-section {
-            margin-bottom: 32px;
-        }
-
+        /* Output & Footer */
         .output-header {
             display: flex;
             align-items: center;
@@ -461,7 +372,6 @@
             box-shadow: 0 0 0 1px var(--google-blue);
         }
 
-        /* Footer */
         .app-footer {
             background: #ffffff;
             border-top: 1px solid var(--google-grey-200);
@@ -538,7 +448,7 @@
         }
     </style>
 </head>
-<body class="app-container">
+<body>
     <!-- Header -->
     <header class="app-header">
         <div class="header-content">
@@ -648,187 +558,124 @@
         <div class="footer-links">
             <a href="https://github.com/michaelthwan/localrepo2txt_html" target="_blank" class="footer-link">
                 <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">code</span>
-                Source Code (Github)
+                Source Code by Michael Wan (Github)
             </a>
             <a href="https://github.com/abinthomasonline/repo2txt" target="_blank" class="footer-link">
                 <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">star</span>
-                Credit: repo2txt
+                Credit: repo2txt by Abin Thomas
             </a>
         </div>
     </footer>
     <script type="module" src="js/local.js"></script>
-    <script>
-        // Enhanced UI interactions for the new design
+        <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const directoryPicker = document.getElementById('directoryPicker');
-            const zipPicker = document.getElementById('zipPicker');
-            const directoryUpload = document.getElementById('directoryUpload');
-            const zipUpload = document.getElementById('zipUpload');
-            const directoryCount = document.getElementById('directoryCount');
-            const zipCount = document.getElementById('zipCount');
-            const extensionSection = document.getElementById('extensionSection');
-            const directorySection = document.getElementById('directorySection');
-            const actionSection = document.getElementById('actionSection');
-            const outputSection = document.getElementById('outputSection');
+            const elements = {
+                directoryPicker: document.getElementById('directoryPicker'),
+                zipPicker: document.getElementById('zipPicker'),
+                directoryUpload: document.getElementById('directoryUpload'),
+                zipUpload: document.getElementById('zipUpload'),
+                directoryCount: document.getElementById('directoryCount'),
+                zipCount: document.getElementById('zipCount'),
+                extensionSection: document.getElementById('extensionSection'),
+                directorySection: document.getElementById('directorySection'),
+                actionSection: document.getElementById('actionSection'),
+                outputSection: document.getElementById('outputSection'),
+                outputText: document.getElementById('outputText'),
+                tokenCount: document.getElementById('tokenCount'),
+                tokenCountText: document.getElementById('tokenCountText')
+            };
 
-            // Directory picker change handler
-            directoryPicker.addEventListener('change', function(e) {
-                const files = e.target.files;
-                if (files.length > 0) {
-                    // Update UI
-                    directoryUpload.classList.add('active');
-                    zipUpload.classList.remove('active');
-                    directoryCount.classList.remove('hidden');
-                    zipCount.classList.add('hidden');
+            // Show sections progressively
+            function showSections() {
+                const sections = [
+                    { el: elements.extensionSection, delay: 300 },
+                    { el: elements.directorySection, delay: 600 },
+                    { el: elements.actionSection, delay: 900 }
+                ];
+                
+                sections.forEach(({ el, delay }) => {
+                    setTimeout(() => {
+                        el.style.display = 'block';
+                        el.classList.add('fade-in-up');
+                    }, delay);
+                });
+            }
+
+            // Handle file selection
+            function handleFileSelection(isDirectory, files) {
+                if (isDirectory) {
+                    elements.directoryUpload.classList.add('active');
+                    elements.zipUpload.classList.remove('active');
+                    elements.directoryCount.classList.remove('hidden');
+                    elements.zipCount.classList.add('hidden');
                     document.getElementById('directoryCountText').textContent = `${files.length} files selected`;
-                    
-                    // Clear zip picker
-                    zipPicker.value = '';
-                    
-                    // Show sections progressively with animation
-                    setTimeout(() => {
-                        extensionSection.style.display = 'block';
-                        extensionSection.classList.add('fade-in-up');
-                    }, 300);
-                    
-                    setTimeout(() => {
-                        directorySection.style.display = 'block';
-                        directorySection.classList.add('fade-in-up');
-                    }, 600);
-                    
-                    setTimeout(() => {
-                        actionSection.style.display = 'block';
-                        actionSection.classList.add('fade-in-up');
-                    }, 900);
+                    elements.zipPicker.value = '';
+                } else {
+                    elements.zipUpload.classList.add('active');
+                    elements.directoryUpload.classList.remove('active');
+                    elements.zipCount.classList.remove('hidden');
+                    elements.directoryCount.classList.add('hidden');
+                    elements.directoryPicker.value = '';
                 }
-            });
+                showSections();
+            }
 
-            // Zip picker change handler
-            zipPicker.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    // Update UI
-                    zipUpload.classList.add('active');
-                    directoryUpload.classList.remove('active');
-                    zipCount.classList.remove('hidden');
-                    directoryCount.classList.add('hidden');
-                    
-                    // Clear directory picker
-                    directoryPicker.value = '';
-                    
-                    // Show sections progressively with animation
-                    setTimeout(() => {
-                        extensionSection.style.display = 'block';
-                        extensionSection.classList.add('fade-in-up');
-                    }, 300);
-                    
-                    setTimeout(() => {
-                        directorySection.style.display = 'block';
-                        directorySection.classList.add('fade-in-up');
-                    }, 600);
-                    
-                    setTimeout(() => {
-                        actionSection.style.display = 'block';
-                        actionSection.classList.add('fade-in-up');
-                    }, 900);
-                }
-            });
-
-            // Generate button click handler
-            document.getElementById('generateTextButton').addEventListener('click', function() {
-                setTimeout(() => {
-                    outputSection.style.display = 'block';
-                    outputSection.classList.add('fade-in-up');
-                    
-                    // Update token counter
-                    const tokenCountText = document.getElementById('tokenCountText');
-                    if (tokenCountText) {
-                        tokenCountText.textContent = 'Processing...';
+            // Show action buttons
+            function showButtons() {
+                ['copyButton', 'downloadButton'].forEach(id => {
+                    const btn = document.getElementById(id);
+                    if (btn) {
+                        btn.classList.remove('hidden');
+                        btn.style.display = 'flex';
                     }
+                });
+            }
+
+            // Event listeners
+            elements.directoryPicker.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) handleFileSelection(true, e.target.files);
+            });
+
+            elements.zipPicker.addEventListener('change', (e) => {
+                if (e.target.files[0]) handleFileSelection(false, e.target.files);
+            });
+
+            document.getElementById('generateTextButton').addEventListener('click', () => {
+                setTimeout(() => {
+                    elements.outputSection.style.display = 'block';
+                    elements.outputSection.classList.add('fade-in-up');
+                    if (elements.tokenCountText) elements.tokenCountText.textContent = 'Processing...';
                 }, 100);
             });
 
-            // Observe the #directoryStructure for changes to show/hide generate button
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.type === 'childList') {
-                        const directoryStructure = document.getElementById('directoryStructure');
-                        const generateBtn = document.getElementById('generateTextButton');
-                        
-                        if (directoryStructure && directoryStructure.children.length > 0) {
-                            generateBtn.classList.remove('hidden');
-                        }
-                    }
-                });
-            });
-
+            // Observers
             const directoryStructure = document.getElementById('directoryStructure');
             if (directoryStructure) {
-                observer.observe(directoryStructure, { childList: true, subtree: true });
+                new MutationObserver(() => {
+                    const generateBtn = document.getElementById('generateTextButton');
+                    if (directoryStructure.children.length > 0) generateBtn.classList.remove('hidden');
+                }).observe(directoryStructure, { childList: true, subtree: true });
             }
 
-            // Update token count display
-            const originalTokenCount = document.getElementById('tokenCount');
-            if (originalTokenCount) {
-                const observer2 = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.type === 'childList' || mutation.type === 'characterData') {
-                            const tokenCountText = document.getElementById('tokenCountText');
-                            if (tokenCountText && originalTokenCount.innerHTML) {
-                                // Extract token count from original element
-                                const match = originalTokenCount.innerHTML.match(/(\d+)/);
-                                if (match) {
-                                    tokenCountText.textContent = `${match[1]} tokens`;
-                                }
-                            }
-                        }
-                    });
-                });
-                observer2.observe(originalTokenCount, { childList: true, subtree: true, characterData: true });
+            if (elements.tokenCount) {
+                new MutationObserver(() => {
+                    if (elements.tokenCountText && elements.tokenCount.innerHTML) {
+                        const match = elements.tokenCount.innerHTML.match(/(\d+)/);
+                        if (match) elements.tokenCountText.textContent = `${match[1]} tokens`;
+                    }
+                }).observe(elements.tokenCount, { childList: true, subtree: true, characterData: true });
             }
 
-                         // Show copy/download buttons when output text changes
-             const outputText = document.getElementById('outputText');
-             if (outputText) {
-                 // Function to show buttons
-                 function showButtons() {
-                     const copyBtn = document.getElementById('copyButton');
-                     const downloadBtn = document.getElementById('downloadButton');
-                     if (copyBtn && downloadBtn) {
-                         copyBtn.classList.remove('hidden');
-                         downloadBtn.classList.remove('hidden');
-                         copyBtn.style.display = 'flex';
-                         downloadBtn.style.display = 'flex';
-                     }
-                 }
-                 
-                 // Watch for changes in outputText value
-                 const observer3 = new MutationObserver(function(mutations) {
-                     mutations.forEach(function(mutation) {
-                         if (outputText.value.trim().length > 0) {
-                             showButtons();
-                         }
-                     });
-                 });
-                 
-                 // Multiple ways to detect content changes
-                 outputText.addEventListener('input', showButtons);
-                 outputText.addEventListener('change', showButtons);
-                 
-                 // Check every second if content appears (fallback)
-                 setInterval(function() {
-                     if (outputText.value.trim().length > 0) {
-                         showButtons();
-                     }
-                 }, 1000);
-                 
-                 observer3.observe(outputText, { 
-                     attributes: true, 
-                     childList: true, 
-                     subtree: true,
-                     characterData: true 
-                 });
-             }
+            if (elements.outputText) {
+                ['input', 'change'].forEach(event => 
+                    elements.outputText.addEventListener(event, () => {
+                        if (elements.outputText.value.trim().length > 0) showButtons();
+                    })
+                );
+                setInterval(() => {
+                    if (elements.outputText.value.trim().length > 0) showButtons();
+                }, 1000);
+            }
         });
     </script>
 </body>
