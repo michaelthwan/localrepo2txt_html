@@ -3,297 +3,659 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Directory to Plain Text Converter | Convert Directories to Text</title>
+    <title>Gemini Code Converter - Convert Directories to Text for AI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&family=Google+Sans+Display:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/jszip.min.js"></script>
     <script async src="https://unpkg.com/gpt-tokenizer"></script>
     <style>
-        /* Apply Inter font to body and most UI elements */
+        :root {
+            --google-blue: #1a73e8;
+            --google-blue-600: #1967d2;
+            --google-blue-700: #1557b0;
+            --google-green: #34a853;
+            --google-green-600: #137333;
+            --google-red: #ea4335;
+            --google-yellow: #fbbc04;
+            --google-grey-50: #f8f9fa;
+            --google-grey-100: #f1f3f4;
+            --google-grey-200: #e8eaed;
+            --google-grey-300: #dadce0;
+            --google-grey-400: #bdc1c6;
+            --google-grey-500: #9aa0a6;
+            --google-grey-600: #80868b;
+            --google-grey-700: #5f6368;
+            --google-grey-800: #3c4043;
+            --google-grey-900: #202124;
+            --gemini-gradient: linear-gradient(135deg, #4285f4 0%, #34a853 25%, #ea4335 50%, #fbbc04 75%, #4285f4 100%);
+            --surface-elevation-1: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --surface-elevation-2: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+            --surface-elevation-3: 0 4px 8px 3px rgba(60, 64, 67, 0.15), 0 1px 3px 0 rgba(60, 64, 67, 0.3);
+            --surface-elevation-4: 0 6px 10px 4px rgba(60, 64, 67, 0.15), 0 2px 3px 0 rgba(60, 64, 67, 0.3);
+        }
+
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        }
-        
-        /* Apply JetBrains Mono to code, filenames, and monospace elements */
-        .font-mono, 
-        code, 
-        pre, 
-        textarea,
-        #directoryStructure,
-        #outputText,
-        .filename {
-            font-family: 'JetBrains Mono', monospace !important;
-        }
-        
-        /* Main container styling */
-        .main-container {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        /* Header styling */
-        .header-title {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Input sections */
-        .input-section {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 16px;
-            transition: all 0.2s ease;
-        }
-        
-        .input-section:hover {
-            border-color: #3b82f6;
-            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
-        }
-        
-        /* Labels */
-        .input-label {
-            color: #374151;
-            font-weight: 500;
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--google-grey-50);
+            color: var(--google-grey-800);
             font-size: 14px;
+            line-height: 20px;
+            margin: 0;
+            padding: 0;
         }
-        
-        /* File inputs */
-        input[type=file] {
-            border: 2px dashed #d1d5db;
+
+        .mono-font {
+            font-family: 'Roboto Mono', 'Consolas', 'Monaco', monospace !important;
+        }
+
+        /* Main App Container */
+        .app-container {
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--google-grey-50) 0%, #ffffff 100%);
+        }
+
+        /* Header */
+        .app-header {
+            background: #ffffff;
+            border-bottom: 1px solid var(--google-grey-200);
+            box-shadow: var(--surface-elevation-1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .gemini-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gemini-gradient);
             border-radius: 8px;
-            padding: 12px;
-            background: #ffffff;
-            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
-        
-        input[type=file]:hover {
-            border-color: #3b82f6;
-            background: #f0f9ff;
-        }
-        
-        input[type=file]::file-selector-button {
-            font-family: 'Inter', sans-serif;
+
+        .app-title {
+            font-family: 'Google Sans Display', sans-serif;
+            font-size: 22px;
             font-weight: 500;
-            font-size: 14px;
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: var(--google-grey-800);
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .beta-badge {
+            background: var(--google-blue);
             color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-right: 12px;
-        }
-        
-        input[type=file]::file-selector-button:hover {
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
-            transform: translateY(-1px);
-        }
-        
-        /* Extension filter section */
-        .extension-filter {
-            background: #f0f9ff;
-            border: 1px solid #bae6fd;
-            border-radius: 10px;
-            padding: 12px 16px;
-        }
-        
-        .extension-filter label {
-            color: #0369a1;
+            font-size: 11px;
             font-weight: 500;
-            font-size: 13px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
-        /* Directory structure */
-        #directoryStructure {
-            font-size: 13px;
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .hero-title {
+            font-family: 'Google Sans Display', sans-serif;
+            font-size: 36px;
+            font-weight: 400;
+            color: var(--google-grey-800);
+            margin: 0 0 12px 0;
+            line-height: 44px;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--google-grey-600);
+            margin: 0 0 32px 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Cards */
+        .card {
             background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 16px;
+            border: 1px solid var(--google-grey-200);
+            border-radius: 12px;
+            box-shadow: var(--surface-elevation-1);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
         }
-        
-        #directoryStructure li {
-            line-height: 1.3;
-            margin: 1px 0;
+
+        .card:hover {
+            box-shadow: var(--surface-elevation-2);
+            border-color: var(--google-grey-300);
+        }
+
+        .card-header {
+            padding: 20px 24px 16px 24px;
+            border-bottom: 1px solid var(--google-grey-100);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            color: var(--google-blue);
+            font-size: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--google-grey-800);
+            margin: 0;
+        }
+
+        .card-content {
+            padding: 24px;
+        }
+
+        /* Upload Sections */
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .upload-area {
+            position: relative;
+            border: 2px dashed var(--google-grey-300);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            background: var(--google-grey-50);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--google-blue);
+            background: #f8fcff;
+        }
+
+        .upload-area.active {
+            border-color: var(--google-blue);
+            background: #f8fcff;
+            box-shadow: 0 0 0 1px var(--google-blue);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--google-blue);
+            margin-bottom: 16px;
+        }
+
+        .upload-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--google-grey-800);
+            margin: 0 0 8px 0;
+        }
+
+        .upload-subtitle {
+            font-size: 14px;
+            color: var(--google-grey-600);
+            margin: 0 0 16px 0;
+        }
+
+        .file-input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--google-green);
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        /* Extension Filters */
+        .extension-section {
+            background: #ffffff;
+            border: 1px solid var(--google-grey-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .extension-header {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--google-grey-700);
+            margin: 0 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .extension-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+        }
+
+        .extension-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--google-grey-700);
+        }
+
+        .extension-checkbox {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--google-blue);
+        }
+
+        /* Directory Structure */
+        .directory-section {
+            margin-bottom: 32px;
+        }
+
+        .directory-container {
+            background: #ffffff;
+            border: 1px solid var(--google-grey-200);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .directory-header {
+            background: var(--google-grey-50);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--google-grey-200);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--google-grey-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .directory-content {
+            padding: 16px 24px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            line-height: 20px;
+        }
+
+        .directory-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             padding: 2px 0;
             border-radius: 4px;
             transition: background-color 0.1s ease;
         }
-        
-        #directoryStructure li:hover {
-            background-color: #f8fafc;
+
+        .directory-item:hover {
+            background-color: var(--google-grey-50);
         }
-        
-        #directoryStructure li > input[type="checkbox"],
-        #directoryStructure li > button,
-        #directoryStructure li > span {
-            vertical-align: middle;
+
+        .directory-checkbox {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--google-blue);
+            flex-shrink: 0;
         }
-        
-        /* Checkboxes */
-        input[type="checkbox"] {
-            accent-color: #3b82f6;
-            transform: scale(1.1);
+
+        .directory-icon {
+            font-size: 16px;
+            flex-shrink: 0;
         }
-        
-        /* Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            border: none;
-            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
-            transition: all 0.2s ease;
+
+        /* Action Buttons */
+        .action-section {
+            margin-bottom: 32px;
         }
-        
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 10px -1px rgba(16, 185, 129, 0.3);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-            border: none;
-            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
-            transition: all 0.2s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 10px -1px rgba(99, 102, 241, 0.3);
-        }
-        
-        .btn-tertiary {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            border: none;
-            box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.2);
-            transition: all 0.2s ease;
-        }
-        
-        .btn-tertiary:hover {
-            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 10px -1px rgba(139, 92, 246, 0.3);
-        }
-        
-        /* Output textarea */
-        #outputText {
+
+        .google-button {
+            font-family: 'Google Sans', sans-serif;
             font-size: 14px;
+            font-weight: 500;
+            border: none;
+            border-radius: 24px;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .google-button:focus {
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.24);
+        }
+
+        .button-primary {
+            background: var(--google-blue);
+            color: white;
+            box-shadow: var(--surface-elevation-1);
+        }
+
+        .button-primary:hover {
+            background: var(--google-blue-600);
+            box-shadow: var(--surface-elevation-2);
+        }
+
+        .button-secondary {
             background: #ffffff;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-            padding: 16px;
-            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+            color: var(--google-blue);
+            border: 1px solid var(--google-grey-300);
+        }
+
+        .button-secondary:hover {
+            background: var(--google-grey-50);
+            box-shadow: var(--surface-elevation-1);
+        }
+
+        .button-full {
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Output Section */
+        .output-section {
+            margin-bottom: 32px;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .output-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--google-grey-800);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .token-counter {
+            background: var(--google-grey-100);
+            color: var(--google-grey-700);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .output-textarea {
+            width: 100%;
+            min-height: 400px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            line-height: 18px;
+            border: 1px solid var(--google-grey-300);
+            border-radius: 12px;
+            padding: 20px;
+            background: #ffffff;
+            color: var(--google-grey-800);
+            resize: vertical;
+            outline: none;
             transition: border-color 0.2s ease;
         }
-        
-        #outputText:focus {
-            border-color: #3b82f6;
-            ring: 2px;
-            ring-color: rgba(59, 130, 246, 0.2);
-            outline: none;
+
+        .output-textarea:focus {
+            border-color: var(--google-blue);
+            box-shadow: 0 0 0 1px var(--google-blue);
         }
-        
-        /* Token count */
-        #tokenCount {
-            color: #6b7280;
-            font-size: 13px;
-            padding: 8px 12px;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            display: inline-block;
-        }
-        
+
         /* Footer */
-        footer {
-            color: #6b7280;
+        .app-footer {
+            background: #ffffff;
+            border-top: 1px solid var(--google-grey-200);
+            padding: 24px;
+            text-align: center;
+            margin-top: 64px;
         }
-        
-        footer a {
-            color: #3b82f6;
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            font-size: 13px;
+        }
+
+        .footer-link {
+            color: var(--google-grey-600);
             text-decoration: none;
-            font-weight: 500;
             transition: color 0.2s ease;
         }
-        
-        footer a:hover {
-            color: #1d4ed8;
+
+        .footer-link:hover {
+            color: var(--google-blue);
         }
-        
-        /* Scrollbar styling */
-        #directoryStructure::-webkit-scrollbar {
-            width: 6px;
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 24px 16px;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .extension-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
         }
-        
-        #directoryStructure::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 3px;
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
         }
-        
-        #directoryStructure::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        #directoryStructure::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+
+        .fade-in-up {
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        /* Hidden state */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen p-4 md:p-8 text-gray-600">
-    <div class="max-w-6xl mx-auto main-container rounded-lg p-8 relative">
-        <h1 class="text-4xl font-bold mb-3 text-center header-title">Directory to Plain Text</h1>
-        <p class="text-lg text-center text-gray-500 mb-8">Convert Directory or Zip File to a Single Formatted Text File</p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div class="input-section">
-                <label for="directoryPicker" class="block input-label mb-3">Select Directory:</label>
-                <input type="file" id="directoryPicker" webkitdirectory directory multiple class="w-full">
+<body class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="gemini-icon">
+                <span class="material-icons" style="color: white; font-size: 20px;">auto_awesome</span>
             </div>
-            <div class="input-section">
-                <label for="zipPicker" class="block input-label mb-3">Or Upload Zip File:</label>
-                <input type="file" id="zipPicker" accept=".zip,.rar,.7z" class="w-full">
-                <p class="text-xs text-gray-500 mt-2">Supported formats: .zip, .rar, .7z</p>
+            <h1 class="app-title">Gemini Code Converter</h1>
+            <span class="beta-badge">Beta</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h2 class="hero-title">Transform Your Code for AI</h2>
+            <p class="hero-subtitle">
+                Convert your directory structure into a formatted text file optimized for Large Language Models. 
+                Perfect for sharing code context with Gemini, ChatGPT, and other AI assistants.
+            </p>
+        </section>
+
+        <!-- Upload Section -->
+        <section class="upload-grid">
+            <div class="upload-area" id="directoryUpload">
+                <div class="upload-icon">📁</div>
+                <h3 class="upload-title">Select Directory</h3>
+                <p class="upload-subtitle">Choose a local directory to convert</p>
+                <input type="file" id="directoryPicker" webkitdirectory directory multiple class="file-input">
+                <div id="directoryCount" class="file-count hidden">
+                    <span class="material-icons" style="font-size: 14px;">check_circle</span>
+                    <span id="directoryCountText">0 files selected</span>
+                </div>
             </div>
-        </div>
+            
+            <div class="upload-area" id="zipUpload">
+                <div class="upload-icon">📦</div>
+                <h3 class="upload-title">Upload Archive</h3>
+                <p class="upload-subtitle">Or upload a .zip, .rar, or .7z file</p>
+                <input type="file" id="zipPicker" accept=".zip,.rar,.7z" class="file-input">
+                <div id="zipCount" class="file-count hidden">
+                    <span class="material-icons" style="font-size: 14px;">check_circle</span>
+                    <span>Archive uploaded</span>
+                </div>
+            </div>
+        </section>
 
-        <div id="extentionCheckboxes" class="extension-filter mb-6"></div>
-        <div id="directoryStructure" class="mb-6"></div>
+        <!-- Extension Filter Section -->
+        <section class="extension-section" id="extensionSection" style="display: none;">
+            <div class="extension-header">
+                <span class="material-icons" style="font-size: 16px;">filter_list</span>
+                Filter by file extensions
+            </div>
+            <div id="extentionCheckboxes" class="extension-grid"></div>
+        </section>
 
-        <button id="generateTextButton" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg focus:outline-none hidden flex items-center justify-center w-full mb-4">
-            <span class="mr-2">📄</span>
-            Generate Text File
-        </button>
+        <!-- Directory Structure Section -->
+        <section class="directory-section" id="directorySection" style="display: none;">
+            <div class="directory-container">
+                <div class="directory-header">
+                    <span class="material-icons" style="font-size: 16px;">account_tree</span>
+                    Project Structure
+                </div>
+                <div class="directory-content">
+                    <div id="directoryStructure"></div>
+                </div>
+            </div>
+        </section>
 
-        <div id="tokenCount" class="mb-4"></div>
-
-        <textarea id="outputText" rows="20" class="w-full font-mono" readonly></textarea>
-
-        <div class="mt-6 flex space-x-4">
-            <button id="copyButton" class="flex-1 btn-secondary text-white font-semibold py-3 px-6 rounded-lg focus:outline-none hidden flex items-center justify-center">
-                <span class="mr-2">📋</span>
-                Copy to Clipboard
+        <!-- Action Section -->
+        <section class="action-section" id="actionSection" style="display: none;">
+            <button id="generateTextButton" class="google-button button-primary button-full">
+                <span class="material-icons">description</span>
+                Generate Text File
             </button>
-            <button id="downloadButton" class="flex-1 btn-tertiary text-white font-semibold py-3 px-6 rounded-lg focus:outline-none hidden flex items-center justify-center">
-                <span class="mr-2">⬇</span>
-                Download Text File
-            </button>
+        </section>
+
+        <!-- Output Section -->
+        <section class="output-section" id="outputSection" style="display: none;">
+            <div class="output-header">
+                <h3 class="output-title">
+                    <span class="material-icons">code</span>
+                    Generated Output
+                </h3>
+                <div id="tokenCount" class="token-counter">
+                    <span class="material-icons" style="font-size: 14px;">analytics</span>
+                    <span id="tokenCountText">Ready to generate</span>
+                </div>
+            </div>
+            
+            <textarea id="outputText" class="output-textarea mono-font" readonly placeholder="Your formatted code will appear here..."></textarea>
+            
+            <div class="button-group">
+                <button id="copyButton" class="google-button button-secondary hidden">
+                    <span class="material-icons">content_copy</span>
+                    Copy to Clipboard
+                </button>
+                <button id="downloadButton" class="google-button button-secondary hidden">
+                    <span class="material-icons">download</span>
+                    Download Text File
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="footer-links">
+            <a href="https://github.com/michaelthwan/localrepo2txt_html" target="_blank" class="footer-link">
+                <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">code</span>
+                Source Code
+            </a>
+            <a href="https://github.com/abinthomasonline/repo2txt" target="_blank" class="footer-link">
+                <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">star</span>
+                Original Project
+            </a>
         </div>
-    </div>
-    <footer class="mt-8 text-center text-sm text-gray-500">
-        <p>
-            <a href="https://github.com/michaelthwan/localrepo2txt_html" target="_blank" class="text-blue-500 hover:text-blue-700">Github source code</a> | 
-            Credit to <a href="https://github.com/abinthomasonline/repo2txt" target="_blank" class="text-blue-500 hover:text-blue-700">repo2txt</a>
-        </p>
     </footer>
     <script type="module" src="js/local.js"></script>
 </body>
