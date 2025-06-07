@@ -89,15 +89,15 @@ function displayDirectoryStructure(tree) {
 
     function createCollapseButton() {
         const collapseButton = document.createElement('button');
-        collapseButton.innerHTML = '<i data-lucide="chevron-down" class="w-4 h-4"></i>';
+        collapseButton.innerHTML = '<span class="inline-block w-4 h-4 text-center text-xs">▼</span>';
         collapseButton.className = 'mr-1 focus:outline-none';
         return collapseButton;
     }
 
     function appendIcon(element, iconName) {
-        const icon = document.createElement('i');
-        icon.setAttribute('data-lucide', iconName);
-        icon.className = 'inline-block w-4 h-4 mr-1';
+        const icon = document.createElement('span');
+        icon.className = 'inline-block w-4 h-4 mr-1 text-center text-xs';
+        icon.textContent = iconName === 'folder' ? '📁' : '📄';
         element.appendChild(icon);
     }
 
@@ -114,13 +114,12 @@ function displayDirectoryStructure(tree) {
     function addCollapseButtonListener(collapseButton, ul) {
         collapseButton.addEventListener('click', function() {
             ul.classList.toggle('hidden');
-            const icon = this.querySelector('[data-lucide]');
+            const icon = this.querySelector('span');
             if (ul.classList.contains('hidden')) {
-                icon.setAttribute('data-lucide', 'chevron-right');
+                icon.textContent = '▶';
             } else {
-                icon.setAttribute('data-lucide', 'chevron-down');
+                icon.textContent = '▼';
             }
-            lucide.createIcons();
         });
     }
 

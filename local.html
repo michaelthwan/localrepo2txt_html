@@ -14,7 +14,7 @@
     <meta property="og:type" content="website">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="js/lucide.min.js"></script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CYF86LN5WM"></script>
     <script>
@@ -43,8 +43,8 @@
 </head>
 <body class="bg-gray-100 min-h-screen p-4 md:p-8 text-gray-600">
     <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 relative">
-        <a href="https://github.com/abinthomasonline/repo2txt" target="_blank" class="absolute top-2 right-2">
-            <i data-lucide="github" class="w-8 h-8 text-gray-600 hover:text-gray-800"></i>
+        <a href="https://github.com/abinthomasonline/repo2txt" target="_blank" class="absolute top-2 right-2 text-2xl text-gray-600 hover:text-gray-800 no-underline" title="GitHub Repository">
+            ⚡
         </a>
         <h1 class="text-3xl font-bold mb-2 text-center text-gray-600">Directory to Plain Text</h1>
         <p class="text-lg text-center text-gray-500 mb-6">Convert Directory or Zip File to a Single Formatted Text File</p>
@@ -67,7 +67,7 @@
         <div id="directoryStructure" class="mt-6"></div>
 
         <button id="generateTextButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hidden flex items-center justify-center">
-            <i data-lucide="file-text" class="w-5 h-5 mr-2"></i>
+            <span class="mr-2">📄</span>
             Generate Text File
         </button>
 
@@ -77,11 +77,11 @@
 
         <div class="mt-4 flex space-x-4">
             <button id="copyButton" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hidden flex items-center justify-center">
-                <i data-lucide="copy" class="w-5 h-5 mr-2"></i>
+                <span class="mr-2">📋</span>
                 Copy to Clipboard
             </button>
             <button id="downloadButton" class="flex-1 bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hidden flex items-center justify-center">
-                <i data-lucide="download" class="w-5 h-5 mr-2"></i>
+                <span class="mr-2">⬇</span>
                 Download Text File
             </button>
         </div>

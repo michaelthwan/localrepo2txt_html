@@ -132,9 +132,9 @@ async function fetchFileContents(files) {
     return contents;
 }
 
-// Initialize Lucide icons
+// DOM content loaded
 document.addEventListener('DOMContentLoaded', function() {
-    lucide.createIcons();
+    // Initialization complete
 });
 
 function isIgnored(filePath, gitignoreRules) {
