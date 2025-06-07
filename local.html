@@ -40,10 +40,31 @@
         input[type=file]::file-selector-button:hover {
             background-color: rgb(37, 99, 235);
         }
+        
+        /* Fix directory structure alignment - only for direct content, not nested structure */
+        #directoryStructure li > input[type="checkbox"],
+        #directoryStructure li > button,
+        #directoryStructure li > span {
+            vertical-align: middle;
+        }
+        
+        #directoryStructure {
+            font-size: 13px;
+        }
+        
+        #directoryStructure li {
+            line-height: 1.3;
+            margin: 1px 0;
+        }
+        
+        /* Larger output text */
+        #outputText {
+            font-size: 14px;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen p-4 md:p-8 text-gray-600">
-    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 relative">
+    <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6 relative">
         <h1 class="text-3xl font-bold mb-2 text-center text-gray-600">Directory to Plain Text</h1>
         <p class="text-lg text-center text-gray-500 mb-6">Convert Directory or Zip File to a Single Formatted Text File</p>
         
