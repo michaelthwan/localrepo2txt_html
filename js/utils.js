@@ -225,7 +225,6 @@ function displayDirectoryStructure(tree) {
         }
     }
 
-    lucide.createIcons();
 }
 
 // Sort contents alphabetically and by directory/file
